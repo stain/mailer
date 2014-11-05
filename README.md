@@ -1,7 +1,14 @@
 # mailer.py
 
+Mass-mailer, reading two text files containing email text and
+email addresses. Tested with Gmail.
 
-## License
+Author: Stian Soiland-Reyes <stian@soiland-reyes.com>
+http://orcid.org/0000-0001-9842-9718
+
+Source code: https://github.com/stain/mailer
+
+## License: GPL 3
 
 (c) 2009-2014 University of Manchester
 
@@ -18,15 +25,11 @@
   You should have received a copy of the GNU General Public License
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-See [LICENSE.txt] or [https://www.gnu.org/licenses/gpl-3.0.html] for details.
+See [LICENSE.txt](LICENSE.txt) or https://www.gnu.org/licenses/gpl-3.0.html for details.
 
 
-Author: Stian Soiland-Reyes <stian@soiland-reyes.com>
-http://orcid.org/0000-0001-9842-9718
 
-https://github.com/stain/mailer
-
-## Usage:
+## Usage
 
   stain@biggie-mint ~/src/mailer $ python mailer.py 
   Usage: mailer.py email.txt addresses.txt
@@ -86,5 +89,8 @@ This section configures defaults for the outgoing email. The `sender` email
 address should be one that is accepted by the outgoing email server, typically
 for Gmail this is the same as your username.
 
+# Feedback
 
-## 
+For any improvements or issues, please use either the 
+[Github issues](https://github.com/stain/mailer/issues)
+or [Github pull requests](https://github.com/stain/mailer/pulls)
