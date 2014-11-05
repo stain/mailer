@@ -1,5 +1,35 @@
 #!/usr/bin/env python
 
+"""
+Mass-emailer, reading an email text file and a list of email addresses.
+(c) 2009-2014 University of Manchester
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+Author: Stian Soiland-Reyes <stian@soiland-reyes.com>
+http://orcid.org/0000-0001-9842-9718
+
+https://github.com/stain/mailer
+
+
+On first run, ~/.mailer is created, and must be configured with the 
+smtp details.
+
+Tested with smtp.gmail.com.
+"""
+
+
 from ConfigParser import ConfigParser
 import email
 import email.utils
@@ -71,13 +101,30 @@ def smtp():
 
 def send_email(email_filename, to, counter):
     text = open(email_filename).read()
+    if "John Doe" in text:
+        print >>sys.stderr, "You need to edit", email_filename
+        sys.exit(3)
     text = text.replace("--counter--", "%02x" % counter)
     msg = email.message_from_string(text)
-    msg["To"] = to
-    to_email = re.split("[<>]", to)[1]
+
+    # Set standard headers if not already read from
+    # file
+    msg["MIME-Version"]= "1.0"
+    if not msg["Content-Type"]:
+        msg["Content-Type"] = "text/plain; charset=UTF-8"
+
+    sender_email = config().get("email", "sender")
+    sender_from = config().get("email", "from")
+    msg["Sender"] = sender_email
+    if not msg["From"]:
+        msg["From"] = "%s <%s>" % (sender_from, sender_email)
     msg["Date"] = email.utils.formatdate(localtime=True)
     msg["Message-Id"] = email.utils.make_msgid("mailer.py")
-    smtp().sendmail("stian@mygrid.org.uk", to, msg.as_string())
+    msg["To"] = to
+    #to_email = re.split("[<>]", to)[1]
+    #print to_email
+    ## sendmail seems to parse "Blah Blah <>" format?
+    smtp().sendmail(sender_email, to, msg.as_string())
 
 def mass_mailer(email_filename, addresses_filename):
     all = open(addresses_filename)
@@ -85,15 +132,17 @@ def mass_mailer(email_filename, addresses_filename):
     for recipient in all:
         recipient = recipient.strip()
         counter += 1
-        print recipient,
         try:
             send_email(email_filename, recipient, counter)
+            print recipient,
             print "%02x" % counter 
         except Exception, ex:
+            print recipient,
             print repr(ex)
         time.sleep(1)
 
 if __name__ == "__main__":
+    config()
     if len(sys.argv) < 3:
         print "Usage:", sys.argv[0], "email.txt", "addresses.txt"
         print ""
