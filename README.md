@@ -48,10 +48,9 @@ See [LICENSE.txt](LICENSE.txt) or https://www.gnu.org/licenses/gpl-3.0.html for 
     First Last <email@example.com>
 
 
-
     stain@biggie-mint ~/src/mailer $ ./mailer.py email.txt test-addresses.txt 
     John Doe <johndoe@example.com> 01
-    Stian Soiland-Reyes <stian@soiland-reyes.com> 02
+    <alice@example.net> 02
 
 ### email.txt
 
@@ -86,10 +85,13 @@ Example (from [test-addresses.txt](test-addresses.txt)):
 
 The name is important, as it will be used in the `To` header.
 
+It is good practice to use say `test-addresses.txt` with
+only yourself as recipient, to verify that the email looks as intended.
+
 ### Serial numbers
 
 If your email message file contains the string ``--counter--``, it will be
-replaced with the counter returned when running the script. This is a
+replaced with a counter, as returned when running the script. This is a
 hexadecimal number starting from 01, e.g. 01, 02, ...,
 09, 0a, 0b, 0c, 0d, 0e, 0f, 10, 11, etc.
 
