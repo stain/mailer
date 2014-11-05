@@ -1,16 +1,9 @@
-MIME-Version: 1.0
-Sender: stian@mygrid.org.uk
-Subject: Taverna 2.2.0 released
-From: myGrid team <support@mygrid.org.uk>
-Content-Type: text/plain; charset=UTF-8
+Subject: Example email
 
 You are receiving this email because you registered to be kept informed
-about Taverna news. If this is no longer the case, feel free to reply to
+about our news. If this is no longer the case, feel free to reply to
 this email, and we'll remove you from our subscription list.
 
-...
-
 -- 
-Stian Soiland-Reyes, myGrid team
-School of Computer Science
-The University of Manchester
+John Doe
+example.com
