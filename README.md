@@ -31,18 +31,19 @@ See [LICENSE.txt](LICENSE.txt) or https://www.gnu.org/licenses/gpl-3.0.html for 
 
 ## Usage
 
-  stain@biggie-mint ~/src/mailer $ python mailer.py 
-  Usage: mailer.py email.txt addresses.txt
+    stain@biggie-mint ~/src/mailer $ python mailer.py 
+    Usage: mailer.py email.txt addresses.txt
 
-  Where email.txt is the RC822 formatted email (with headers)
-  and addresses.txt is a list of addresses to email, in the form
+    Where email.txt is the RC822 formatted email (with headers)
+    and addresses.txt is a list of addresses to email, in the form
 
-  First Last <email@example.com>
+    First Last <email@example.com>
 
 
-  stain@biggie-mint ~/src/mailer $ ./mailer.py email.txt test-addresses.txt 
-  John Doe <johndoe@example.com> 01
-  Stian Soiland-Reyes <stian@soiland-reyes.com> 02
+
+    stain@biggie-mint ~/src/mailer $ ./mailer.py email.txt test-addresses.txt 
+    John Doe <johndoe@example.com> 01
+    Stian Soiland-Reyes <stian@soiland-reyes.com> 02
 
 
 
@@ -94,3 +95,11 @@ for Gmail this is the same as your username.
 For any improvements or issues, please use either the 
 [Github issues](https://github.com/stain/mailer/issues)
 or [Github pull requests](https://github.com/stain/mailer/pulls)
+
+# Serial numbers
+
+If your email message file contains the string ``--counter--``, it will be
+replaced with the counter returned when running the script. This is a
+hexadecimal number starting from 01, e.g. 01, 02, ...,
+09, 0a, 0b, 0c, 0d, 0e, 0f, 10, 11, etc.
+
