@@ -71,9 +71,8 @@ message, including header lines (minimum `Subject`). Example (from [email.txt](e
 
 The `From`, `Date` and `To` headers are added automatically.
 
-The email file MUST be in UTF-8 encoding and should not contain HTML (unless
-you also modify `Content-Type`). It is good practice to include a signature
-after `-- `.
+The email file MUST be in UTF-8 encoding and should not contain HTML.
+It is good practice to include a signature after `-- `.
 
 
 ### addresses.txt
@@ -85,7 +84,7 @@ Example (from [test-addresses.txt](test-addresses.txt)):
   John Doe <johndoe@example.com>
   <alice.bob@example.net>
 
-The name is importan,t as it will be used in the `To` header.
+The name is important, as it will be used in the `To` header.
 
 ### Serial numbers
 
