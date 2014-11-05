@@ -88,10 +88,10 @@ def smtp():
         return _smtp
     if config().get("smtp", "username") == DUMMY_USER:
         print >>sys.stderr, "You need to configure 'smtp' settings in", _configpath()
-        sys.exit(1)
+        sys.exit(2)
     if config().get("email", "sender") == DUMMY_USER:
         print >>sys.stderr, "You need to configure 'email' settings in", _configpath()
-        sys.exit(1)
+        sys.exit(3)
     _smtp = smtplib.SMTP(config().get("smtp", "host"), config().getint("smtp", "port"))
     if (config().getboolean("smtp", "tls")):
         _smtp.starttls()
@@ -103,7 +103,7 @@ def send_email(email_filename, to, counter):
     text = open(email_filename).read()
     if "John Doe" in text:
         print >>sys.stderr, "You need to edit", email_filename
-        sys.exit(3)
+        sys.exit(4)
     text = text.replace("--counter--", "%02x" % counter)
     msg = email.message_from_string(text)
 
@@ -131,6 +131,9 @@ def mass_mailer(email_filename, addresses_filename):
     counter = 0
     for recipient in all:
         recipient = recipient.strip()
+        if "johndoe@example.com" in recipient:
+            print >>sys.stderr, "You need to edit", email_filename
+            sys.exit(5)
         counter += 1
         try:
             send_email(email_filename, recipient, counter)
