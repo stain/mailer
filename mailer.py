@@ -135,10 +135,20 @@ def mass_mailer(email_filename, addresses_filename):
             print >>sys.stderr, "You need to edit", email_filename
             sys.exit(5)
         counter += 1
+        sent = False
         try:
-            send_email(email_filename, recipient, counter)
-            print recipient,
-            print "%02x" % counter 
+            while not sent:
+                try:
+                    send_email(email_filename, recipient, counter)
+                    print recipient,
+                    print "%02x" % counter 
+                    sent = True
+                except smtplib.SMTPServerDisconnected, ex:   
+                    print recipient,
+                    print repr(ex)
+                    print "Reconnecting in 60 seconds"
+                    _smtp = None
+                    time.sleep(60)
         except Exception, ex:
             print recipient,
             print repr(ex)
