@@ -7,3 +7,4 @@ this email, and we'll remove you from our subscription list.
 -- 
 John Doe
 example.com
+--counter--
