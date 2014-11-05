@@ -8,6 +8,14 @@ http://orcid.org/0000-0001-9842-9718
 
 Source code: https://github.com/stain/mailer
 
+
+This is not intended for spam purposes, as it:
+
+a) Is too slow for very large volumes
+b) Uses your regular SMTP service
+c) Does not support HTML emails or forged From addresses
+
+
 ## License: GPL 3
 
 (c) 2009-2014 University of Manchester
@@ -45,6 +53,46 @@ See [LICENSE.txt](LICENSE.txt) or https://www.gnu.org/licenses/gpl-3.0.html for 
     John Doe <johndoe@example.com> 01
     Stian Soiland-Reyes <stian@soiland-reyes.com> 02
 
+### email.txt
+
+The first argument should be the name of a file containing an RFC822 valid 
+message, including header lines (minimum `Subject`). Example (from [email.txt](email.txt)):
+
+    Subject: Example email 
+
+    You are receiving this email because you registered to be kept informed
+    about our news. If this is no longer the case, feel free to reply to
+    this email, and we'll remove you from our subscription list.
+
+    -- 
+    John Doe
+    example.com
+    --counter--
+
+The `From`, `Date` and `To` headers are added automatically.
+
+The email file MUST be in UTF-8 encoding and should not contain HTML (unless
+you also modify `Content-Type`). It is good practice to include a signature
+after `-- `.
+
+
+### addresses.txt
+
+The list of addresses to email, line by line.
+
+Example (from [test-addresses.txt](test-addresses.txt)):
+
+  John Doe <johndoe@example.com>
+  <alice.bob@example.net>
+
+The name is importan,t as it will be used in the `To` header.
+
+### Serial numbers
+
+If your email message file contains the string ``--counter--``, it will be
+replaced with the counter returned when running the script. This is a
+hexadecimal number starting from 01, e.g. 01, 02, ...,
+09, 0a, 0b, 0c, 0d, 0e, 0f, 10, 11, etc.
 
 
 ## Configuration
@@ -96,10 +144,4 @@ For any improvements or issues, please use either the
 [Github issues](https://github.com/stain/mailer/issues)
 or [Github pull requests](https://github.com/stain/mailer/pulls)
 
-# Serial numbers
-
-If your email message file contains the string ``--counter--``, it will be
-replaced with the counter returned when running the script. This is a
-hexadecimal number starting from 01, e.g. 01, 02, ...,
-09, 0a, 0b, 0c, 0d, 0e, 0f, 10, 11, etc.
 
