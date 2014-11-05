@@ -11,7 +11,7 @@ Source code: https://github.com/stain/mailer
 
 This is not intended for spam purposes, as it:
 
-1. Is too slow for very large volumes
+1. Is too slow for very large volumes (1s sleep pr email)
 2. Uses your regular SMTP service
 3. Does not support HTML emails or forged From addresses
 
