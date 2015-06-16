@@ -80,8 +80,8 @@ The list of addresses to email, line by line.
 
 Example (from [test-addresses.txt](test-addresses.txt)):
 
-  John Doe <johndoe@example.com>
-  <alice.bob@example.net>
+    John Doe <johndoe@example.com>
+    <alice.bob@example.net>
 
 The name is important, as it will be used in the `To` header.
 
