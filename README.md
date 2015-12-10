@@ -18,7 +18,7 @@ This is not intended for spam purposes, as it:
 
 ## License: GPL 3
 
-(c) 2009-2014 University of Manchester
+(c) 2009-2015 University of Manchester
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -39,7 +39,7 @@ See [LICENSE.txt](LICENSE.txt) or https://www.gnu.org/licenses/gpl-3.0.html for 
 
 ## Usage
 
-    stain@biggie-mint ~/src/mailer $ python mailer.py 
+    stain@biggie-mint ~/src/mailer $ python mailer.py
     Usage: mailer.py email.txt addresses.txt
 
     Where email.txt is the RC822 formatted email (with headers)
@@ -48,22 +48,22 @@ See [LICENSE.txt](LICENSE.txt) or https://www.gnu.org/licenses/gpl-3.0.html for 
     First Last <email@example.com>
 
 
-    stain@biggie-mint ~/src/mailer $ ./mailer.py email.txt test-addresses.txt 
+    stain@biggie-mint ~/src/mailer $ ./mailer.py email.txt test-addresses.txt
     John Doe <johndoe@example.com> 01
     <alice@example.net> 02
 
 ### email.txt
 
-The first argument should be the name of a file containing an RFC822 valid 
+The first argument should be the name of a file containing an RFC822 valid
 message, including header lines (minimum `Subject`). Example (from [email.txt](email.txt)):
 
-    Subject: Example email 
+    Subject: Example email
 
     You are receiving this email because you registered to be kept informed
     about our news. If this is no longer the case, feel free to reply to
     this email, and we'll remove you from our subscription list.
 
-    -- 
+    --
     John Doe
     example.com
     --counter--
@@ -88,6 +88,11 @@ The name is important, as it will be used in the `To` header.
 It is good practice to use say `test-addresses.txt` with
 only yourself as recipient, to verify that the email looks as intended.
 
+#### Carbon copies
+
+To include a `Cc:`` field, use a `\t`
+
+
 ### Serial numbers
 
 If your email message file contains the string ``--counter--``, it will be
@@ -98,7 +103,7 @@ hexadecimal number starting from 01, e.g. 01, 02, ...,
 
 ## Configuration
 
-On first run, `~/.mailer` is created, and must be configured with the 
+On first run, `~/.mailer` is created, and must be configured with the
 smtp details:
 
     [smtp]
@@ -115,13 +120,13 @@ smtp details:
 
 ### [smtp]
 
-The `[smtp]` section defines how to connect to the SMTP server for sending emails. The 
+The `[smtp]` section defines how to connect to the SMTP server for sending emails. The
 defaults should work with Google by changing `username` and `password`. You might need to use
 Google's [application passwords](https://security.google.com/settings/security/apppasswords)
 for this feature.
 
 
-To configure against a different server, also modify `host` and `port`. Note that 
+To configure against a different server, also modify `host` and `port`. Note that
 most other authenticated SMTP servers require a plain username with
 `@example.com`.
 
@@ -141,8 +146,6 @@ for Gmail this is the same as your username.
 
 # Feedback
 
-For any improvements or issues, please use either the 
+For any improvements or issues, please use either the
 [Github issues](https://github.com/stain/mailer/issues)
 or [Github pull requests](https://github.com/stain/mailer/pulls)
-
-

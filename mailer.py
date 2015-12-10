@@ -2,7 +2,7 @@
 
 """
 Mass-emailer, reading an email text file and a list of email addresses.
-(c) 2009-2014 University of Manchester
+(c) 2009-2015 University of Manchester
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -23,7 +23,7 @@ http://orcid.org/0000-0001-9842-9718
 https://github.com/stain/mailer
 
 
-On first run, ~/.mailer is created, and must be configured with the 
+On first run, ~/.mailer is created, and must be configured with the
 smtp details.
 
 Tested with smtp.gmail.com.
@@ -71,8 +71,8 @@ def save_config():
 def template_config():
     if not config().has_section("smtp"):
         config().add_section("smtp")
-    config().set("smtp", "host", "smtp.gmail.com")    
-    config().set("smtp", "port", 587)    
+    config().set("smtp", "host", "smtp.gmail.com")
+    config().set("smtp", "port", 587)
     config().set("smtp", "tls", True)
     config().set("smtp", "username", DUMMY_USER)
     config().set("smtp", "password", "WrongPassword")
@@ -95,16 +95,30 @@ def smtp():
     _smtp = smtplib.SMTP(config().get("smtp", "host"), config().getint("smtp", "port"))
     if (config().getboolean("smtp", "tls")):
         _smtp.starttls()
-    if (config().has_option("smtp", "username")):    
+    if (config().has_option("smtp", "username")):
         _smtp.login(config().get("smtp", "username"), config().get("smtp", "password"))
     return _smtp
 
-def send_email(email_filename, to, counter):
+def send_email(email_filename, to, counter, cc=None):
     text = open(email_filename).read()
     if "John Doe" in text:
         print >>sys.stderr, "You need to edit", email_filename
         sys.exit(4)
+
+    ## template to insert a tracking counter that is
+    ## unique per email, e.g. into the Subject field
+    ## or signature. Note that the counter starttls
+    ## from 00 for each execution.
     text = text.replace("--counter--", "%02x" % counter)
+    if cc:
+        ## template to insert the name of the first CC-ed person
+        ## into message, e.g. the recommending "friend"
+        first_cc = cc[0].split("<")[0].strip()
+        text = text.replace("--friend--", first_cc)
+    else:
+        ## some kind of fallback
+        text = text.replace("--friend--", "someone")
+
     msg = email.message_from_string(text)
 
     # Set standard headers if not already read from
@@ -121,10 +135,16 @@ def send_email(email_filename, to, counter):
     msg["Date"] = email.utils.formatdate(localtime=True)
     msg["Message-Id"] = email.utils.make_msgid("mailer.py")
     msg["To"] = to
+    if (cc):
+        msg["Cc"] = ", ".join(cc)
     #to_email = re.split("[<>]", to)[1]
     #print to_email
     ## sendmail seems to parse "Blah Blah <>" format?
-    smtp().sendmail(sender_email, to, msg.as_string())
+
+    recipients = [to]
+    if cc:
+        recipients += cc
+    smtp().sendmail(sender_email, recipients, msg.as_string())
 
 def mass_mailer(email_filename, addresses_filename):
     all = open(addresses_filename)
@@ -134,16 +154,27 @@ def mass_mailer(email_filename, addresses_filename):
         if "johndoe@example.com" in recipient:
             print >>sys.stderr, "You need to edit", email_filename
             sys.exit(5)
+        cc = []
+        if ("\t") in recipient:
+            # A line with CC
+            fields = recipient.split("\t")
+            recipient = fields[0]
+            cc = fields[1:]
+        if recipient.count("<") > 1:
+            print "FAILED: More than one email address on line - use \\t (tab character)"
+            return
         counter += 1
         sent = False
         try:
             while not sent:
                 try:
-                    send_email(email_filename, recipient, counter)
+                    send_email(email_filename, recipient, counter, cc)
                     print recipient,
-                    print "%02x" % counter 
+                    print "%02x" % counter
+                    for also in cc:
+                        print "      Cc:", also
                     sent = True
-                except smtplib.SMTPServerDisconnected, ex:   
+                except smtplib.SMTPServerDisconnected, ex:
                     print recipient,
                     print repr(ex)
                     print "Reconnecting in 60 seconds"
@@ -167,4 +198,3 @@ if __name__ == "__main__":
         sys.exit(1)
 
     mass_mailer(sys.argv[1], sys.argv[2])
-
